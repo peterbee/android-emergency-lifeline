@@ -8,7 +8,9 @@
         android:targetSdkVersion="16" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-feature android:name="android.hardware.camera" />
 	<uses-feature android:name="android.hardware.camera.autofocus" />
     <application
@@ -33,6 +35,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+        <service 
+            android:name="EmergencyService" >
+        </service>
+        <service 
+            android:name="PhotoCapture" >
+        </service>
+        <service 
+            android:name="UploadFile" >
+        </service>
+        </application>
 
 </manifest>

@@ -6,41 +6,37 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.app.Activity;
+import android.app.Service;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.util.Log;
-import android.view.Menu;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
-public class MediaCapture extends Activity {
+public class PhotoCapture extends Service {
 	protected ArrayList<Camera> mCameras = new ArrayList<Camera>();
+	Intent uploadService;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_pass_code);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_pass_code, menu);
-		return true;
+	public IBinder onBind(Intent arg0) {
+		return null;
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		openCameras();
+	public void onCreate() {
+		super.onCreate();
+		uploadService = new Intent(this, UploadFile.class);
+		int numCams = openCameras();
+		Log.i("PhotoCapture",numCams+" cameras available");
 		capturePhotos();
 	}
+	
 	@Override
-	public void onPause() {
+	public void onDestroy() {
 		releaseCameras();
-		super.onPause();
+		super.onDestroy();
 	}
 	
 	private int openCameras() {
@@ -103,12 +99,13 @@ public class MediaCapture extends Activity {
 					outStream = new FileOutputStream(imageFile);
 					outStream.write(imageData);
 					outStream.close();
-					Log.d("TestApp", "onPictureTaken - wrote bytes: "
+					Log.d("PhotoCapture", "onPictureTaken - wrote bytes: "
 							+ imageData.length);
 
 					c.startPreview();
-					Toast.makeText(getApplicationContext(), String.format("%s written", imageFile), Toast.LENGTH_SHORT).show();
-
+					Log.i("MediaCapture", String.format("%s written", imageFile));
+					uploadService.putExtra("filepath",imageFile.toString());
+					startService(uploadService);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
