@@ -32,6 +32,7 @@ public class PassCode extends Activity {
         passCodeText = (EditText) findViewById(R.id.editText1);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(passCodeText, InputMethodManager.SHOW_IMPLICIT);
+        passCodeText.requestFocus();
         
         buttonOk = (Button) findViewById(R.id.buttonOK);
 		buttonOk.setOnClickListener(new View.OnClickListener() {
