@@ -39,6 +39,7 @@ public class Main extends Activity {
         dangerModeButton = (Button) findViewById(R.id.ButtonDangerMode);
 		dangerModeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				passcodeActivity.putExtra("message", "Enter your Pass Code");
 				startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
 			}
 		});
@@ -46,6 +47,7 @@ public class Main extends Activity {
         setPasscodeButton = (Button) findViewById(R.id.ButtonPassCode);
 		setPasscodeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				passcodeActivity.putExtra("message", "Create a Pass Code");
 				startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
 			}
 		});
@@ -60,7 +62,7 @@ public class Main extends Activity {
     	if (passCode == "" || passCode == null || passCode == " ") {
     		Log.v("Main","passcode is null");
     		//passCode = "1234";
-    		passcodeActivity.putExtra("message", "Create a passcode");
+    		passcodeActivity.putExtra("message", "Create a Pass Code");
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
     	} else {
     		passcodeActivity.putExtra("message", "Enter your Pass Code");
@@ -87,9 +89,15 @@ public class Main extends Activity {
     
 	public void setPassCode(String string) {
 		Editor editor = getSharedPreferences("passCode", 0).edit();
+		editor.remove("passCode");
+		editor.commit();
 		editor.putString("passCode", string);
 		editor.commit();
-		Log.v("Main","saved passCode " + passCode);
+		Log.v("Main","saved passCode: " + string);
+		
+		SharedPreferences pref = getSharedPreferences("passCode", 1);
+    	passCode = pref.getString("passCode", "");
+        Log.v("Main","have reloaded passcode string to saved SharedPreference" + "'" + passCode + "'");
 	}
     
     public void setNewPasscode() {
@@ -113,6 +121,7 @@ public class Main extends Activity {
     		if(resultCode == RESULT_OK){
    				passCode1 = data.getStringExtra("passCode");
    				Log.v("Main","received passcode 1: " + passCode1);
+   	    		passcodeActivity.putExtra("message", "Re-enter new Pass Code");
    				startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_2);
     		}
     	} else if(requestCode == NEW_PASSCODE_REQUEST_2){
