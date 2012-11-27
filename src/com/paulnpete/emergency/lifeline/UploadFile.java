@@ -22,9 +22,10 @@ public class UploadFile extends Service {
 	String filepath;
 	String postUrl = "http://sites.limetreecreative.com/lifeline/emergencyPost.php";
 	String postQuery = "";
-	Location geolocation = null;
-	LocationManager locationManager = null;
-	LocationListener locationListener = null;
+	Location geolocation;
+	LocationManager locationManager;
+	LocationListener locationListener;
+	int serviceStartId;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -33,6 +34,7 @@ public class UploadFile extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		serviceStartId = startId;
 		startLocationListener();
 		filepath = intent.getStringExtra("filepath");
 		Bundle extras = intent.getExtras();
@@ -50,7 +52,7 @@ public class UploadFile extends Service {
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		geolocation = lastKnownLocation;
-		LocationListener locationListener = new LocationListener() {
+		/*LocationListener locationListener = new LocationListener() {
 			public void onLocationChanged(Location location) {
 				geolocation = location;
 				stopLocationListener();
@@ -59,12 +61,12 @@ public class UploadFile extends Service {
 			public void onProviderEnabled(String provider) {}
 			public void onProviderDisabled(String provider) {}
 		};
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);*/
 	}
 	
-	protected void stopLocationListener(){
+	/*protected void stopLocationListener(){
 		locationManager.removeUpdates(locationListener);
-	}
+	}*/
 	
 	private class UploadFileTask extends AsyncTask<String, Void, Void> {
 
@@ -150,7 +152,7 @@ public class UploadFile extends Service {
 				Log.v("UploadFile","Response Code: "+serverResponseCode);
 				Log.v("UploadFile","Response Message: "+serverResponseMessage);
 
-				stopSelf();
+				stopSelf(serviceStartId);
 			} catch (Exception e) {
 				Log.e("UploadFile","Upload error: "+e.toString());
 			}

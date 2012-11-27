@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
@@ -28,9 +31,14 @@ public class PhotoCapture extends Service {
 	public void onCreate() {
 		super.onCreate();
 		uploadService = new Intent(this, UploadFile.class);
+	}
+
+	@Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 		int numCams = openCameras();
 		Log.i("PhotoCapture",numCams+" cameras available");
 		capturePhotos();
+        return START_STICKY;
 	}
 	
 	@Override
@@ -97,7 +105,11 @@ public class PhotoCapture extends Service {
 							String.format("%d.jpg", System.currentTimeMillis())
 						);
 					outStream = new FileOutputStream(imageFile);
-					outStream.write(imageData);
+					Bitmap bitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
+				    /* Write bitmap to file using JPEG and 80% quality hint for JPEG. */
+//					Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 1200, 1200, false); // memory leak? "external allocation too large for this process" -- kills app after three photos
+					bitmap.compress(CompressFormat.JPEG, 80, outStream);
+				    //outStream.write(imageData);
 					outStream.close();
 					Log.d("PhotoCapture", "onPictureTaken - wrote bytes: "
 							+ imageData.length);
@@ -106,11 +118,12 @@ public class PhotoCapture extends Service {
 					Log.i("MediaCapture", String.format("%s written", imageFile));
 					uploadService.putExtra("filepath",imageFile.toString());
 					startService(uploadService);
+					
+					// TODO: run this in a loop (every 5 seconds maybe?)
 				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					stopSelf();
 				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
+					stopSelf();
 				}
 			}
 		}

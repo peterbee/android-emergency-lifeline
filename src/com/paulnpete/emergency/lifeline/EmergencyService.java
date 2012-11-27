@@ -18,14 +18,16 @@ public class EmergencyService extends Service {
 	public void onCreate() {
 		Log.i("EmergencyService","Created service for the first time");
 		photoCaptureService = new Intent(this,PhotoCapture.class);
+		audioCaptureService = new Intent(this,AudioCapture.class);
 	}
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("EmergencyService", "Received start id " + startId + ": " + intent);
+		//startService(audioCaptureService);
+        startService(photoCaptureService);
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
-        nextMediaEvent();
         return START_STICKY;
 	}
 	
@@ -33,10 +35,8 @@ public class EmergencyService extends Service {
 	public void onDestroy() {
 		Log.i("EmergencyService","Stopping service process");
 		stopService(photoCaptureService);
+		//stopService(audioCaptureService);
 		super.onDestroy();
 	}
 	
-	public void nextMediaEvent() { // TODO: call this method on a timer
-		startService(photoCaptureService);
-	}
 }
