@@ -3,21 +3,19 @@
     <string name="app_name">Emergency Lifeline</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Emergency Lifeline</string>
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="zero">0</string>
     <string name="ok">OK</string>
     <string name="reset">Reset Passcode</string>
     <string name="danger_mode">Danger Mode</string>
     <string name="exit">Exit</string>
     <string name="push_button_explain">Push and hold the button to activate your Emergency Lifeline</string>
     <string name="welcome">Emergency Lifeline</string>
+    <string name="delete">Delete</string>
+    <string name="timer">Timer</string>
+    <string name="oldPassCode">Enter your old Pass Code:</string>
+    <string name="newPassCode1">Enter your new Pass Code:</string>
+    <string name="newPassCode2">Please re-enter your new Pass Code:</string>
+    <string name="enterPassCode">Enter your Pass Code</string>
+    <string name="newPassCode1w">NO MATCH! Enter your new Pass Code:</string>
+    <string name="PassCodeW">WRONG! Re-enter your Pass Code: </string>
 
 </resources>
