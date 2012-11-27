@@ -138,9 +138,11 @@ public class Main extends Activity {
     				startActivity(dangerModeActivity);
     		} else if(resultCode == RESULT_CANCELED){
     			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_LONG).show();
+    			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
     			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     		} else {
     			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_LONG).show();
+    			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
         		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     			// TODO: danger mode not activated -- message this
     		}

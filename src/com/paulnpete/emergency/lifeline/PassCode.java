@@ -57,15 +57,7 @@ public class PassCode extends Activity {
 			}
 		});
         
-        timer = (Chronometer) findViewById(R.id.chronometer1);
         enterPassCodeText = (TextView) findViewById(R.id.textView1);
-        
-        if (resetTrue) {
-        	buttonReset.setVisibility(View.VISIBLE);
-        	enterPassCodeText.setVisibility(View.VISIBLE);
-        }
-        if (timerTrue) timer.setVisibility(View.VISIBLE);
-        //if (setNewTrue) setNewPass();
         
         String displayMessage = getIntent().getStringExtra("message");
         setMessage(displayMessage);
