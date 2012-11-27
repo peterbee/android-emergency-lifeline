@@ -25,19 +25,17 @@ public class Main extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.v("onCreate","beginning of onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         passcodeActivity = new Intent(this, PassCode.class);
         dangerModeActivity = new Intent(this, DangerMode.class);
-        Log.v("onCreate","onCreate has finished");
     }
     
     public void onStart() {
     	super.onStart();
     	SharedPreferences pref = getSharedPreferences("passCode", 1);
     	passCode = pref.getString("passCode", "");
-        Log.v("passcode","have set passcode string to saved SharedPreference" + "'" + passCode + "'");
+        Log.v("Main","have set passcode string to saved SharedPreference" + "'" + passCode + "'");
     	//set a check here for presence of SharedPreference
     	//PassCode.resetBool(); //this is temp
     	
@@ -59,7 +57,7 @@ public class Main extends Activity {
            	}
            		startActivity(dangerModeActivity);*/
     	}
-    	Log.v("passcode existence", "have verified passcode existence");
+    	Log.v("Main", "have verified passcode existence");
     	//startActivity(passcodeActivity);//hard-coded to test the pass code button
     }
 
@@ -73,6 +71,7 @@ public class Main extends Activity {
 		Editor editor = getSharedPreferences("passCode", 0).edit();
 		editor.putString("passCode", string);
 		editor.commit();
+		Log.v("Main","saved passCode " + passCode);
 	}
     
     public void setNewPasscode() {

@@ -36,8 +36,8 @@ public class PassCode extends Activity {
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				passCodeString = passCodeText.getText().toString();
-				Log.v("ok button was clicked!","ok button was clicked and here's what it got: " + passCodeString);
-				getIntent().putExtra("passcode", passCodeString);//.pushPassCode(passCodeText.getText().toString());
+				Log.v("PassCode","ok button was clicked and here's what it got: " + passCodeString);
+				getIntent().putExtra("passCode", passCodeString);//.pushPassCode(passCodeText.getText().toString());
 				setResult(RESULT_OK, getIntent());
 				finish();
 			}
