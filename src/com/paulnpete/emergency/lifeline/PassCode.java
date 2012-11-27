@@ -38,7 +38,7 @@ public class PassCode extends Activity {
 				passCodeString = passCodeText.getText().toString();
 				Log.v("ok button was clicked!","ok button was clicked and here's what it got: " + passCodeString);
 				getIntent().putExtra("passcode", passCodeString);//.pushPassCode(passCodeText.getText().toString());
-				//getPassCode();
+				setResult(RESULT_OK, getIntent());
 				finish();
 			}
 		});
@@ -77,16 +77,5 @@ public class PassCode extends Activity {
 			enterPassCodeText.setText(string);
 		Log.v("PassCode","string was set to message");
 	}
-	
-	public static void setNewBool() {
-		setNewTrue = true;
-	}
-	
-	public static void resetBool() {
-		resetTrue = true;
-	}
-	
-	public static void timerBool() {
-		timerTrue = true;
-	}
+
 }

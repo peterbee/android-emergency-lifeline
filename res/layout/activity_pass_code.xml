@@ -42,7 +42,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/enterPassCode"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <EditText
         android:id="@+id/editText1"
@@ -50,7 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/chronometer1"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:ems="10"
-        android:inputType="numberPassword" />
+        android:inputType="numberPassword" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
