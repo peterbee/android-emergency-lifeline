@@ -38,7 +38,8 @@ public class PassCode extends Activity {
 			public void onClick(View v) {
 				passCodeString = passCodeText.getText().toString();
 				Log.v("PassCode","ok button was clicked and here's what it got: " + passCodeString);
-				if (getIntent().getIntExtra("requestID", 0) == 0) {
+				Log.v("PassCode","requestID = " + getIntent().getIntExtra("requestID", -1));
+				if (getIntent().getIntExtra("requestID", -1) == 0) {
 					if (checkPassCodes()) {
 						getIntent().putExtra("passCode", passCodeString);
 						setResult(RESULT_OK, getIntent());
