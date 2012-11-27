@@ -13,8 +13,8 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/emergency" />
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/ButtonDangerMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
@@ -22,7 +22,20 @@
         android:layout_marginTop="31dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="@string/welcome"
+        android:text="@string/DangerMode"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/ButtonPassCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ButtonDangerMode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/SetPasscode"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="32sp" />
 

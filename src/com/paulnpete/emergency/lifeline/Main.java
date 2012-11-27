@@ -2,11 +2,15 @@ package com.paulnpete.emergency.lifeline;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class Main extends Activity {
 	
@@ -17,10 +21,12 @@ public class Main extends Activity {
 	String passCode1;
 	String passCode2;
 	String currPassCode;
-	Boolean wrong = false;
 	static final int NEW_PASSCODE_REQUEST_1 = 0;
 	static final int NEW_PASSCODE_REQUEST_2 = 1;
 	static final int VERIFY_PASSCODE_REQUEST = 2;
+	Button dangerModeButton;
+	Button setPasscodeButton;
+	Context context = this;
 	
 
     @Override
@@ -29,6 +35,20 @@ public class Main extends Activity {
         setContentView(R.layout.activity_main);
         passcodeActivity = new Intent(this, PassCode.class);
         dangerModeActivity = new Intent(this, DangerMode.class);
+        
+        dangerModeButton = (Button) findViewById(R.id.ButtonDangerMode);
+		dangerModeButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+			}
+		});
+		
+        setPasscodeButton = (Button) findViewById(R.id.ButtonPassCode);
+		setPasscodeButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
+			}
+		});
     }
     
     public void onStart() {
@@ -36,17 +56,14 @@ public class Main extends Activity {
     	SharedPreferences pref = getSharedPreferences("passCode", 1);
     	passCode = pref.getString("passCode", "");
         Log.v("Main","have set passcode string to saved SharedPreference" + "'" + passCode + "'");
-    	//set a check here for presence of SharedPreference
-    	//PassCode.resetBool(); //this is temp
-    	
+    	    	
     	if (passCode == "" || passCode == null || passCode == " ") {
     		Log.v("Main","passcode is null");
     		//passCode = "1234";
     		passcodeActivity.putExtra("message", "Create a passcode");
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
     	} else {
-//    		PassCode.setMessage("@string/enterPassCode");
-    		passcodeActivity.putExtra("message", "@string/enterPassCode");
+    		passcodeActivity.putExtra("message", "Enter your Pass Code");
     		passcodeActivity.putExtra("verifyCode", passCode);
     		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     		/*currPassCode = passCodeString;
@@ -58,7 +75,8 @@ public class Main extends Activity {
            		startActivity(dangerModeActivity);*/
     	}
     	Log.v("Main", "have verified passcode existence");
-    	//startActivity(passcodeActivity);//hard-coded to test the pass code button
+
+    
     }
 
     @Override
@@ -75,20 +93,6 @@ public class Main extends Activity {
 	}
     
     public void setNewPasscode() {
-    	/*if (!wrong) {
-    		PassCode.setMessage("Enter new Pass Code: f");  //("@string/newPassCode1");
-    	} else {
-    		PassCode.setMessage("@string/newPassCode1w");
-    	}
-    	startActivityForResult(passcodeActivity, PASSCODE_REQUEST);
-    	passCode1 = passCode;
-    	Log.v("passCode1","1 is " + passCode1);
-    	
-    	PassCode.setMessage("@string/newPassCode2");
-    	startActivityForResult(passcodeActivity, PASSCODE_REQUEST);
-    	passCode2 = passCode;
-    	Log.v("passCode2","2 is " + passCode1);*/
-    	
     	if (passCode1.equals(passCode2)) {
     		setPassCode(passCode1);
     		// TODO: passcode saved -- message appropriately
@@ -99,16 +103,6 @@ public class Main extends Activity {
     	}
     }
     
-    /*public void resetPasscode() {
-    	startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
-       	currPassCode = passCodeString;
-       	if (currPassCode == passCode) {
-       		setNewPasscode();
-       	} else {
-       		//change message text to WRONG and stuff
-       		resetPasscode();
-       	}
-    }*/
     
     public static void pushPassCode(String string) {
     	passCodeString = string;
@@ -129,8 +123,11 @@ public class Main extends Activity {
     		}
     	} else if(requestCode == VERIFY_PASSCODE_REQUEST){
     		if(resultCode == RESULT_OK){
-    			startActivity(dangerModeActivity);
+    			if (passCode.equals(data.getStringExtra("passCode")))
+    				startActivity(dangerModeActivity);
     		} else {
+    			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_LONG).show();
+        		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     			// TODO: danger mode not activated -- message this
     		}
     	}
