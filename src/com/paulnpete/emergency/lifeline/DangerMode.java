@@ -4,6 +4,7 @@ package com.paulnpete.emergency.lifeline;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,12 +18,15 @@ public class DangerMode extends Activity{
 	
 	Intent main;
 	Intent emergencyService;
+	Intent passcodeActivity;
 	ImageButton SAFE_Button;
 	final int STATE_WAITING = 1;
 	final int STATE_SAFE = 2;
 	final int STATE_EMERGENCY = 3;
+	static final int VERIFY_PASSCODE_REQUEST = 0;
 	int appState = STATE_WAITING;
 	final Context context = this; 
+	String passCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class DangerMode extends Activity{
         setContentView(R.layout.activity_danger_mode);
         main = new Intent(this, Main.class);
         emergencyService = new Intent(this, EmergencyService.class);
+        passcodeActivity = new Intent(this, PassCode.class);
 		SAFE_Button = (ImageButton) findViewById(R.id.SAFEButton);
 		SAFE_Button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -60,6 +65,10 @@ public class DangerMode extends Activity{
 				onExitButton();
 			}
 		});
+		
+		SharedPreferences pref = getSharedPreferences("passCode", 1);
+    	passCode = pref.getString("passCode", "");
+        Log.v("DangerMode","set verification passCode to " + "'" + passCode + "'");
     }
     
     public boolean enterSafeState() {
@@ -70,6 +79,7 @@ public class DangerMode extends Activity{
     public boolean enterEmergencyState() {
 		appState = STATE_EMERGENCY;
     	startService(emergencyService);
+    	startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     	// TODO: change button or remove it?
     	// TODO: display passcode view
     	return true;
@@ -82,9 +92,27 @@ public class DangerMode extends Activity{
     }
 
     public void onExitButton() {
-    	exitDangerMode(); // TODO: this should be actually happen when correct passcode is entered to disable emergency state
-    	startActivity(main);
+    	startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+    	//exitDangerMode(); // TODO: this should be actually happen when correct passcode is entered to disable emergency state
+    	//startActivity(main);
     }
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == VERIFY_PASSCODE_REQUEST){
+			if(resultCode == RESULT_OK){
+				if (passCode.equals(data.getStringExtra("passCode")))
+					exitDangerMode();
+					startActivity(main);
+			} else if(resultCode == RESULT_CANCELED){
+    			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_LONG).show();
+    			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+			} else {
+    			Toast.makeText(context, "Danger Mode not deactivated", Toast.LENGTH_LONG).show();
+	    		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+			}
+		}
+	}
+
 }
 
 //imgButton.setBackgroundResource(R.drawable.ic_launcher);

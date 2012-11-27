@@ -21,9 +21,9 @@ public class Main extends Activity {
 	String passCode1;
 	String passCode2;
 	String currPassCode;
-	static final int NEW_PASSCODE_REQUEST_1 = 0;
-	static final int NEW_PASSCODE_REQUEST_2 = 1;
-	static final int VERIFY_PASSCODE_REQUEST = 2;
+	static final int NEW_PASSCODE_REQUEST_1 = 1;
+	static final int NEW_PASSCODE_REQUEST_2 = 2;
+	static final int VERIFY_PASSCODE_REQUEST = 0;
 	Button dangerModeButton;
 	Button setPasscodeButton;
 	Context context = this;
@@ -40,6 +40,7 @@ public class Main extends Activity {
 		dangerModeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				passcodeActivity.putExtra("message", "Enter your Pass Code");
+				passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
 				startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
 			}
 		});
@@ -64,7 +65,7 @@ public class Main extends Activity {
     		//passCode = "1234";
     		passcodeActivity.putExtra("message", "Create a Pass Code");
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
-    	} else {
+    	/*} else {
     		passcodeActivity.putExtra("message", "Enter your Pass Code");
     		passcodeActivity.putExtra("verifyCode", passCode);
     		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
@@ -133,7 +134,11 @@ public class Main extends Activity {
     	} else if(requestCode == VERIFY_PASSCODE_REQUEST){
     		if(resultCode == RESULT_OK){
     			if (passCode.equals(data.getStringExtra("passCode")))
+    				dangerModeActivity.putExtra("passCode", passCode);
     				startActivity(dangerModeActivity);
+    		} else if(resultCode == RESULT_CANCELED){
+    			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_LONG).show();
+    			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     		} else {
     			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_LONG).show();
         		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);

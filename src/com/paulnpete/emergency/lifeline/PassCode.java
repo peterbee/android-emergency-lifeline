@@ -20,6 +20,7 @@ public class PassCode extends Activity {
 	static EditText passCodeText;
 	Chronometer timer;
 	static TextView enterPassCodeText;
+	String passCode;
 	
 	static String passCodeString;
 	String newPassCode;
@@ -37,9 +38,20 @@ public class PassCode extends Activity {
 			public void onClick(View v) {
 				passCodeString = passCodeText.getText().toString();
 				Log.v("PassCode","ok button was clicked and here's what it got: " + passCodeString);
-				getIntent().putExtra("passCode", passCodeString);//.pushPassCode(passCodeText.getText().toString());
-				setResult(RESULT_OK, getIntent());
-				finish();
+				if (getIntent().getIntExtra("requestID", 0) == 0) {
+					if (checkPassCodes()) {
+						getIntent().putExtra("passCode", passCodeString);
+						setResult(RESULT_OK, getIntent());
+						finish();
+					} else {
+						setResult(RESULT_CANCELED, getIntent());
+						finish();
+					}
+				}  else {
+					getIntent().putExtra("passCode", passCodeString);
+					setResult(RESULT_OK, getIntent());
+					finish();
+				}
 			}
 		});
         
@@ -76,6 +88,17 @@ public class PassCode extends Activity {
 		if(string != null)
 			enterPassCodeText.setText(string);
 		Log.v("PassCode","string was set to message");
+	}
+	
+	//code intended to make a check of the saved and the entered passCodes
+	public boolean checkPassCodes() {
+		Log.v("PassCode","passCodeString = " + passCodeString);
+		SharedPreferences pref = getSharedPreferences("passCode", 1);
+    	passCode = pref.getString("passCode", "");
+        Log.v("PassCode","SharedPreferences passCode = " + "'" + passCode + "'");
+        if (passCode.equals(passCodeString))
+        	return true;
+        return false;
 	}
 
 }
