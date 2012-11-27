@@ -89,7 +89,7 @@ public class Main extends Activity {
     	passCode2 = passCode;
     	Log.v("passCode2","2 is " + passCode1);*/
     	
-    	if (passCode1 == passCode2) {
+    	if (passCode1.equals(passCode2)) {
     		setPassCode(passCode1);
     		// TODO: passcode saved -- message appropriately
     	} else {
