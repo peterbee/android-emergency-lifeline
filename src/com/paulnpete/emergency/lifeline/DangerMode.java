@@ -88,8 +88,6 @@ public class DangerMode extends Activity{
     	emergencyView();
     	passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
     	startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
-    	// TODO: change button or remove it?
-    	// TODO: display passcode view
     	return true;
     }
     
@@ -101,10 +99,7 @@ public class DangerMode extends Activity{
     }
 
     public void onExitButton() {
-    	//passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
-    	//startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
-    	exitDangerMode(); // TODO: this should be actually happen when correct passcode is entered to disable emergency state
-    	//startActivity(main);
+    	exitDangerMode(); 
     }
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,7 +107,6 @@ public class DangerMode extends Activity{
 			if(resultCode == RESULT_OK){
 				if (passCode.equals(data.getStringExtra("passCode")))
 					exitDangerMode();
-					//finish(); //startActivity(main);
 			} else if(resultCode == RESULT_CANCELED){
     			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_SHORT).show();
     			passcodeActivity.putExtra("message", "Incorrect Pass Code");
@@ -136,4 +130,3 @@ public class DangerMode extends Activity{
 
 }
 
-//imgButton.setBackgroundResource(R.drawable.ic_launcher);

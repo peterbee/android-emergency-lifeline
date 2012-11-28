@@ -92,9 +92,8 @@ public class Main extends Activity {
     public void setNewPasscode() {
     	if (passCode1.equals(passCode2)) {
     		setPassCode(passCode1);
-    		// TODO: passcode saved -- message appropriately
+			Toast.makeText(context, "pass code saved successfully", Toast.LENGTH_SHORT).show();
     	} else {
-    		//change message text to WRONG and stuff
     		passcodeActivity.putExtra("message", "They don't match.  Try again.");
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
     	}
@@ -134,7 +133,6 @@ public class Main extends Activity {
 				passcodeActivity.putExtra("message", "Enter your Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
         		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
-    			// TODO: danger mode not activated -- message this
     		}
     	}
 

@@ -83,7 +83,7 @@ public class PassCode extends Activity {
 		Log.v("PassCode","string was set to message");
 	}
 	
-	//code intended to make a check of the saved and the entered passCodes
+	//code to check whether the saved and the entered passCodes are equal
 	public boolean checkPassCodes() {
 		Log.v("PassCode","passCodeString = " + passCodeString);
 		SharedPreferences pref = getSharedPreferences("passCode", 1);
