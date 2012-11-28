@@ -87,6 +87,7 @@ public class DangerMode extends Activity{
     	startService(emergencyService);
     	emergencyView();
     	passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+    	passcodeActivity.putExtra("showCancel", false);
     	startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     	return true;
     }
@@ -111,11 +112,13 @@ public class DangerMode extends Activity{
     			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_SHORT).show();
     			passcodeActivity.putExtra("message", "Incorrect Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+    			passcodeActivity.putExtra("showCancel", false);
     			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
 			} else {
     			Toast.makeText(context, "Danger Mode not deactivated", Toast.LENGTH_SHORT).show();
 				passcodeActivity.putExtra("message", "Enter your Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+    			passcodeActivity.putExtra("showCancel", false);
 	    		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
 			}
 		}

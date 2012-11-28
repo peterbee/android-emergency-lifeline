@@ -20,5 +20,6 @@
     <string name="DangerMode">Danger Mode</string>
     <string name="SetPasscode">Set Pass code</string>
     <string name="danger">DANGER!</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

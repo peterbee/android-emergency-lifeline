@@ -15,7 +15,7 @@ public class PassCode extends Activity {
 	static boolean resetTrue = false;
 	static boolean setNewTrue = false;
 	static boolean timerTrue = false;
-	Button buttonReset;
+	Button buttonCancel;
 	static Button buttonOk;
 	static EditText passCodeText;
 	static TextView enterPassCodeText;
@@ -27,7 +27,7 @@ public class PassCode extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_code);
-        buttonReset = (Button) findViewById(R.id.ButtonReset);
+        buttonCancel = (Button) findViewById(R.id.ButtonCancel);
         passCodeText = (EditText) findViewById(R.id.editText1);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(passCodeText, InputMethodManager.SHOW_IMPLICIT);
@@ -45,7 +45,7 @@ public class PassCode extends Activity {
 						setResult(RESULT_OK, getIntent());
 						finish();
 					} else {
-						setResult(RESULT_CANCELED, getIntent());
+						setResult(RESULT_FIRST_USER, getIntent());
 						finish();
 					}
 				}  else {
@@ -55,7 +55,20 @@ public class PassCode extends Activity {
 				}
 			}
 		});
+		
+		buttonCancel.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+					setResult(RESULT_CANCELED, getIntent());
+					finish();
+			}
+		});
         
+		if (getIntent().getBooleanExtra("showCancel",false)) {
+			buttonCancel.setVisibility(View.VISIBLE);
+		} else {
+			buttonCancel.setVisibility(View.GONE);
+		}
+		
         enterPassCodeText = (TextView) findViewById(R.id.textView1);
         
         String displayMessage = getIntent().getStringExtra("message");

@@ -41,6 +41,7 @@ public class Main extends Activity {
 			public void onClick(View v) {
 				passcodeActivity.putExtra("message", "Enter your Pass Code");
 				passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+				passcodeActivity.putExtra("showCancel", true);
 				startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
 			}
 		});
@@ -49,6 +50,8 @@ public class Main extends Activity {
 		setPasscodeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				passcodeActivity.putExtra("message", "Create a Pass Code");
+				passcodeActivity.putExtra("requestID", NEW_PASSCODE_REQUEST_1);
+				passcodeActivity.putExtra("showCancel", true);
 				startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
 			}
 		});
@@ -63,6 +66,8 @@ public class Main extends Activity {
     	if (passCode == "" || passCode == null || passCode == " ") {
     		Log.v("Main","passcode is null");
     		passcodeActivity.putExtra("message", "Create a Pass Code");
+    		passcodeActivity.putExtra("requestID", NEW_PASSCODE_REQUEST_1);
+			passcodeActivity.putExtra("showCancel", true);
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
     	}
     	Log.v("Main", "have verified passcode existence");
@@ -95,6 +100,8 @@ public class Main extends Activity {
 			Toast.makeText(context, "pass code saved successfully", Toast.LENGTH_SHORT).show();
     	} else {
     		passcodeActivity.putExtra("message", "They don't match.  Try again.");
+    		passcodeActivity.putExtra("requestID", NEW_PASSCODE_REQUEST_1);
+			passcodeActivity.putExtra("showCancel", true);
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
     	}
     }
@@ -110,6 +117,8 @@ public class Main extends Activity {
    				passCode1 = data.getStringExtra("passCode");
    				Log.v("Main","received passcode 1: " + passCode1);
    	    		passcodeActivity.putExtra("message", "Re-enter new Pass Code");
+   	    		passcodeActivity.putExtra("requestID", NEW_PASSCODE_REQUEST_2);
+				passcodeActivity.putExtra("showCancel", true);
    				startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_2);
     		}
     	} else if(requestCode == NEW_PASSCODE_REQUEST_2){
@@ -123,15 +132,19 @@ public class Main extends Activity {
     			if (passCode.equals(data.getStringExtra("passCode")))
     				dangerModeActivity.putExtra("passCode", passCode);
     				startActivity(dangerModeActivity);
-    		} else if(resultCode == RESULT_CANCELED){
+    		} else if(resultCode == RESULT_FIRST_USER){
     			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_SHORT).show();
     			passcodeActivity.putExtra("message", "Incorrect Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+				passcodeActivity.putExtra("showCancel", true);
     			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+    		} else if(resultCode == RESULT_CANCELED){
+    			Toast.makeText(context, "Canceled", Toast.LENGTH_SHORT).show();
     		} else {
     			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_SHORT).show();
 				passcodeActivity.putExtra("message", "Enter your Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+				passcodeActivity.putExtra("showCancel", true);
         		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     		}
     	}
