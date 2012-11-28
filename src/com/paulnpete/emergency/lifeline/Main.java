@@ -62,20 +62,8 @@ public class Main extends Activity {
     	    	
     	if (passCode == "" || passCode == null || passCode == " ") {
     		Log.v("Main","passcode is null");
-    		//passCode = "1234";
     		passcodeActivity.putExtra("message", "Create a Pass Code");
     		startActivityForResult(passcodeActivity, NEW_PASSCODE_REQUEST_1);
-    	/*} else {
-    		passcodeActivity.putExtra("message", "Enter your Pass Code");
-    		passcodeActivity.putExtra("verifyCode", passCode);
-    		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
-    		/*currPassCode = passCodeString;
-    		Log.v("Main","received pass code from PassCode");
-           	while (currPassCode != passCode) {
-           		PassCode.setMessage("@string/PassCodeW");
-           		startActivityForResult(passcodeActivity, PASSCODE_REQUEST);
-           	}
-           		startActivity(dangerModeActivity);*/
     	}
     	Log.v("Main", "have verified passcode existence");
 
@@ -137,11 +125,13 @@ public class Main extends Activity {
     				dangerModeActivity.putExtra("passCode", passCode);
     				startActivity(dangerModeActivity);
     		} else if(resultCode == RESULT_CANCELED){
-    			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_LONG).show();
+    			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_SHORT).show();
+    			passcodeActivity.putExtra("message", "Incorrect Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
     			startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     		} else {
-    			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_LONG).show();
+    			Toast.makeText(context, "Danger Mode not activated", Toast.LENGTH_SHORT).show();
+				passcodeActivity.putExtra("message", "Enter your Pass Code");
     			passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
         		startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
     			// TODO: danger mode not activated -- message this

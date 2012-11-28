@@ -19,5 +19,6 @@
     <string name="PassCodeW">WRONG! Re-enter your Pass Code: </string>
     <string name="DangerMode">Danger Mode</string>
     <string name="SetPasscode">Set Pass code</string>
+    <string name="danger">DANGER!</string>
 
 </resources>

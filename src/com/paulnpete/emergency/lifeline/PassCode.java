@@ -18,7 +18,6 @@ public class PassCode extends Activity {
 	Button buttonReset;
 	static Button buttonOk;
 	static EditText passCodeText;
-	Chronometer timer;
 	static TextView enterPassCodeText;
 	String passCode;
 	

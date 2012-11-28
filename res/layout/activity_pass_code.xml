@@ -13,14 +13,15 @@
         android:text="@string/reset"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/buttonOK"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/ok" />
+        android:ems="10"
+        android:inputType="numberPassword" />
 
     <TextView
         android:id="@+id/textView1"
@@ -28,22 +29,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="15dp"
         android:text="@string/enterPassCode"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="visible" />
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/buttonOK"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:inputType="numberPassword" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="17dp"
+        android:text="@string/ok" />
 
 </RelativeLayout>
