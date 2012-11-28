@@ -97,12 +97,13 @@ public class DangerMode extends Activity{
     	appState = STATE_WAITING;
     	stopService(emergencyService);
     	Log.i("DangerMode","Emergency service deactivated");
+    	finish();
     }
 
     public void onExitButton() {
-    	passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
-    	startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
-    	//exitDangerMode(); // TODO: this should be actually happen when correct passcode is entered to disable emergency state
+    	//passcodeActivity.putExtra("requestID", VERIFY_PASSCODE_REQUEST);
+    	//startActivityForResult(passcodeActivity, VERIFY_PASSCODE_REQUEST);
+    	exitDangerMode(); // TODO: this should be actually happen when correct passcode is entered to disable emergency state
     	//startActivity(main);
     }
 
@@ -111,7 +112,7 @@ public class DangerMode extends Activity{
 			if(resultCode == RESULT_OK){
 				if (passCode.equals(data.getStringExtra("passCode")))
 					exitDangerMode();
-					startActivity(main);
+					//finish(); //startActivity(main);
 			} else if(resultCode == RESULT_CANCELED){
     			Toast.makeText(context, "Incorrect Pass Code", Toast.LENGTH_SHORT).show();
     			passcodeActivity.putExtra("message", "Incorrect Pass Code");
