@@ -7,12 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,10 +16,6 @@ import android.util.Log;
 public class UploadFile extends Service {
 	String filepath;
 	String postUrl = "http://sites.limetreecreative.com/lifeline/emergencyPost.php";
-	String postQuery = "";
-	Location geolocation;
-	LocationManager locationManager;
-	LocationListener locationListener;
 	int serviceStartId;
 	
 	@Override
@@ -35,38 +26,12 @@ public class UploadFile extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		serviceStartId = startId;
-		startLocationListener();
 		filepath = intent.getStringExtra("filepath");
 		Bundle extras = intent.getExtras();
 		Log.v("UploadFile",extras.toString());
 		new UploadFileTask().execute(filepath);
 		return START_REDELIVER_INTENT;
 	}
-	
-	/*@Override
-	public void onDestroy(){
-		stopLocationListener();
-	}*/
-	
-	protected void startLocationListener(){
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		geolocation = lastKnownLocation;
-		/*LocationListener locationListener = new LocationListener() {
-			public void onLocationChanged(Location location) {
-				geolocation = location;
-				stopLocationListener();
-			}
-			public void onStatusChanged(String provider, int status, Bundle extras) {}
-			public void onProviderEnabled(String provider) {}
-			public void onProviderDisabled(String provider) {}
-		};
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);*/
-	}
-	
-	/*protected void stopLocationListener(){
-		locationManager.removeUpdates(locationListener);
-	}*/
 	
 	private class UploadFileTask extends AsyncTask<String, Void, Void> {
 
@@ -91,17 +56,10 @@ public class UploadFile extends Service {
 				Log.i("UploadFile","File path: " + filepath);
 				if(filepath == null) return null;
 				
-				// Add geolocation to post
-				if(geolocation != null){
-					postQuery += "&latitude="+geolocation.getLatitude();
-					postQuery += "&longitude="+geolocation.getLongitude();
-				}
-				
 				// Upload the file
 				FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile) );
-				URL url = new URL(urlServer + "?" + postQuery);
+				URL url = new URL(urlServer);
 				connection = (HttpURLConnection) url.openConnection();
-				Log.i("UploadFile",urlServer + "?" + postQuery);
 				Log.i("UploadFile",url.toString());
 				
 				// Allow Inputs & Outputs

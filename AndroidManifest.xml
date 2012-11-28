@@ -50,6 +50,9 @@
             android:name="EmergencyService" >
         </service>
         <service 
+            android:name="TrackGeolocation" >
+        </service>
+        <service 
             android:name="PhotoCapture" >
         </service>
         <service 
