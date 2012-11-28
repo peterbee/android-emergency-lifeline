@@ -21,5 +21,6 @@
     <string name="SetPasscode">Set Pass code</string>
     <string name="danger">DANGER!</string>
     <string name="cancel">Cancel</string>
+    <string name="safe">SAFE</string>
 
 </resources>

@@ -128,7 +128,8 @@ public class DangerMode extends Activity{
     	textView.setText("EMERGENCY!");
     	textView.setTextSize(46);
     	textView.setTextColor(Color.RED);
-    	danger.setVisibility(View.VISIBLE);
+    	danger.setText("DANGER!");
+    	danger.setTextSize(65);
 	}
 
 }

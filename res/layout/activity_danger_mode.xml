@@ -40,9 +40,9 @@
         android:layout_alignTop="@+id/SAFEButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
-        android:text="@string/danger"
+        android:text="@string/safe"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="65sp"
-        android:visibility="gone" />
+        android:textSize="45sp"
+        android:visibility="visible" />
 
 </RelativeLayout>
