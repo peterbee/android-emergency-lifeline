@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/SAFEButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="60dp"
         android:text="@string/safe"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="45sp"
