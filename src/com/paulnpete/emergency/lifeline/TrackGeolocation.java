@@ -42,6 +42,7 @@ public class TrackGeolocation extends Service {
 		new SendLocationTask().execute(lastKnownLocation);
 		locationListener = new LocationListener() {
 			public void onLocationChanged(Location location) {
+				Log.v("TrackGeolocation","onLocationChanged called");
 				new SendLocationTask().execute(location);
 			}
 			public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -87,13 +88,12 @@ public class TrackGeolocation extends Service {
 				// Responses from the server (code and message)
 				int serverResponseCode = connection.getResponseCode();
 				String serverResponseMessage = connection.getResponseMessage();
-
-				connection.getOutputStream().flush();
+				connection.disconnect();
 
 				Log.v("TrackGeolocation","Response Code: "+serverResponseCode);
 				Log.v("TrackGeolocation","Response Message: "+serverResponseMessage);
 
-				stopSelf();
+				//stopSelf();
 			} catch (Exception e) {
 				Log.e("TrackGeolocation","Request error: "+e.toString());
 			}

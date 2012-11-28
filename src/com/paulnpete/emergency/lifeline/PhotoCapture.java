@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Service;
 import android.content.Intent;
@@ -76,18 +78,33 @@ public class PhotoCapture extends Service {
 		}
 	}
 	
+	private void startPhotoTimer(){
+		Timer photoTimer = new Timer("photoTimer",true);
+		photoTimer.schedule(new PhotoTimer(),15000);
+	}
+
+	private class PhotoTimer extends TimerTask {
+		public void run(){
+			Log.i("PhotoCapture","Initiating new photo");
+			capturePhotos();
+		}
+	}
+	
 	private void capturePhotos() {
 		int numCams = mCameras.size();
+		Log.v("PhotoCapture",numCams+" cameras to use");
 		for(int i=0;i<numCams;i++){
 			try {
 				Camera mCamera = mCameras.get(i);
 				SurfaceView view = new SurfaceView(this);
-	            //addContentView(view, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 	            Log.v("surface view",view.toString());
 				mCamera.setPreviewDisplay(view.getHolder());
 				mCamera.startPreview();
 				mCamera.takePicture(null, null, jpegCallback);
-			} catch (Exception e) {}
+				//startPhotoTimer();
+			} catch (Exception e) {
+				Log.e("PhotoCapture",e.getMessage());
+			}
 		}
 	}
 
@@ -109,7 +126,7 @@ public class PhotoCapture extends Service {
 				    /* Write bitmap to file using JPEG and 80% quality hint for JPEG. */
 //					Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 1200, 1200, false); // memory leak? "external allocation too large for this process" -- kills app after three photos
 					bitmap.compress(CompressFormat.JPEG, 80, outStream);
-				    //outStream.write(imageData);
+				    //outStream.write(imageData); // old write to OutputStream before compression method
 					outStream.close();
 					Log.d("PhotoCapture", "onPictureTaken - wrote bytes: "
 							+ imageData.length);
@@ -118,8 +135,7 @@ public class PhotoCapture extends Service {
 					Log.i("MediaCapture", String.format("%s written", imageFile));
 					uploadService.putExtra("filepath",imageFile.toString());
 					startService(uploadService);
-					
-					// TODO: run this in a loop (every 5 seconds maybe?)
+
 				} catch (FileNotFoundException e) {
 					stopSelf();
 				} catch (IOException e) {

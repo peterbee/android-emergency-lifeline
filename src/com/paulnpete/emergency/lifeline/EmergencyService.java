@@ -8,7 +8,7 @@ import android.util.Log;
 public class EmergencyService extends Service {
 	Intent trackGeolocationService;
 	Intent photoCaptureService;
-	Intent audioCaptureService;
+	//Intent audioCaptureService;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -20,17 +20,15 @@ public class EmergencyService extends Service {
 		Log.i("EmergencyService","Created service for the first time");
 		trackGeolocationService = new Intent(this,TrackGeolocation.class);
 		photoCaptureService = new Intent(this,PhotoCapture.class);
-		audioCaptureService = new Intent(this,AudioCapture.class);
+		//audioCaptureService = new Intent(this,AudioCapture.class);
 	}
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("EmergencyService", "Received start id " + startId + ": " + intent);
         startService(trackGeolocationService);
-		//startService(audioCaptureService);
         startService(photoCaptureService);
-	    // We want this service to continue running until it is explicitly
-	    // stopped, so return sticky.
+	    //startService(audioCaptureService);
         return START_STICKY;
 	}
 	
